@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { UtilityService } from './utility.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ export class AppComponent implements OnInit {
   submitted = false;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private utilityService: UtilityService
   ) { }
 
   ngOnInit() {
@@ -36,5 +38,10 @@ export class AppComponent implements OnInit {
       alert('Form Submitted succesfully!!!\n Check the values in browser console.');
       console.table(this.premiumCalForm.value);
     }
+
+    var age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value)
+    console.log("age is " + age);
+    console.log(this.premiumCalForm.get('name')?.value)
+    console.log(this.premiumCalForm.get('dob')?.value)
   }
 }
