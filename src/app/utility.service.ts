@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class UtilityService {
 
+  //this data may come from API but for now i have hardcoded
   occupation_rating = [
 
     { Occupation : 'Cleaner', Rating: 'Light Manual'},
@@ -16,6 +17,7 @@ export class UtilityService {
 
   ]
 
+  //this data may come from API but for now i have hardcoded
   rating_factor = [
 
     { Rating : 'Professional', Factor: 1.0 },
@@ -49,6 +51,6 @@ export class UtilityService {
     }
     console.log(results)
     return results;
-    
+  
   }
 }

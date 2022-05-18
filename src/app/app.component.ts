@@ -12,9 +12,9 @@ export class AppComponent implements OnInit {
 
   premiumCalForm!: FormGroup;
   submitted = false;
+  isValidForm = false;
   occupationList : any[] = [];
-  City: string[] = ['Florida', 'South Dakota', 'Tennessee', 'Michigan'];
-
+  premium : number = 0;
   constructor(
     private fb: FormBuilder,
     private utilityService: UtilityService
@@ -36,29 +36,28 @@ export class AppComponent implements OnInit {
   get premiumFormControl() {
     return this.premiumCalForm.controls;
   }
-  get OccupationName() {
+  get OccupationRatingFactor() {
     return this.premiumCalForm.get('occupations');
   }
 
   changeOccupation(e: any) {
-    this.OccupationName?.setValue(e.target.value, {
-      onlySelf: true,
-    });
-    console.log(this.premiumCalForm.get('occupations')?.value)
-    var age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value);
+    this.calculatePremium();
   }
   onSubmit() {
     this.submitted = true;
-    // if (this.premiumCalForm.valid) {
-    //   alert('Form Submitted succesfully!!!\n Check the values in browser console.');
-    //   console.table(this.premiumCalForm.value);
-    // }
+    if (this.premiumCalForm.valid) { 
+    this.isValidForm = true;
+    this.calculatePremium();    
+    } else {
+      this.isValidForm = false;
+    }
+  }
 
-    var age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value)
-   // var occupation = this.utilityService.getOccupationWithFactor();
-    console.log("occupation is " +this.occupationList[1].factor);
-    console.log("age is " + age);
-    console.log(this.premiumCalForm.get('name')?.value)
-    console.log(this.premiumCalForm.get('dob')?.value)
+  calculatePremium() {
+    const age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value);
+    const occupationRatingFactor  = this.OccupationRatingFactor?.value;
+    const sumInsured = this.premiumCalForm.get('suminsured')?.value
+    this.premium = (sumInsured * occupationRatingFactor * age)/(12 * 1000);
+    console.log("premium amount is " + this.premium);
   }
 }
