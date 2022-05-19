@@ -1,4 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
@@ -6,6 +8,8 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        FormsModule,
+        ReactiveFormsModule,
         RouterTestingModule
       ],
       declarations: [
@@ -26,10 +30,16 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('premium-calculator');
   });
 
-  it('should render title', () => {
+  it('should click submit button', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('premium-calculator app is running!');
-  });
+    const component = fixture.componentInstance;
+    spyOn(component, 'onSubmit');
+    let button = fixture.debugElement.nativeElement.querySelector('button');
+    button.click();
+    tick();
+    expect(component.onSubmit).toHaveBeenCalled();
+
+  }));
+  
 });

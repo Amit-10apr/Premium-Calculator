@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   submitted = false;
   isValidForm = false;
   occupationList : any[] = [];
-  premium : number = 0;
+  premium : string = "0";
   constructor(
     private fb: FormBuilder,
     private utilityService: UtilityService
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
     const age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value);
     const occupationRatingFactor  = this.OccupationRatingFactor?.value;
     const sumInsured = this.premiumCalForm.get('suminsured')?.value
-    this.premium = (sumInsured * occupationRatingFactor * age)/(12 * 1000);
+    this.premium = ((sumInsured * occupationRatingFactor * age)/(12 * 1000)).toFixed(2);
     console.log("premium amount is " + this.premium);
   }
 }
