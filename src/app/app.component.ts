@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   isValidForm = false;
   occupationList : any[] = [];
   premium : string = "0";
+  age :number = 0
+  
   constructor(
     private fb: FormBuilder,
     private utilityService: UtilityService
@@ -31,6 +33,11 @@ export class AppComponent implements OnInit {
       suminsured: ['', Validators.required]
     }
     );
+
+    this.premiumCalForm.get('dob')!.valueChanges.subscribe(val => {
+      this.age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value);
+      this.calculatePremium();
+    });
   }
 
   get premiumFormControl() {
@@ -43,6 +50,7 @@ export class AppComponent implements OnInit {
   changeOccupation(e: any) {
     this.calculatePremium();
   }
+
   onSubmit() {
     this.submitted = true;
     if (this.premiumCalForm.valid) { 
@@ -54,10 +62,10 @@ export class AppComponent implements OnInit {
   }
 
   calculatePremium() {
-    const age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value);
+    this.age = this.utilityService.calculateAge(this.premiumCalForm.get('dob')?.value);
     const occupationRatingFactor  = this.OccupationRatingFactor?.value;
     const sumInsured = this.premiumCalForm.get('suminsured')?.value
-    this.premium = ((sumInsured * occupationRatingFactor * age)/(12 * 1000)).toFixed(2);
+    this.premium = ((sumInsured * occupationRatingFactor *Number(this.age))/(12 * 1000)).toFixed(2);
     console.log("premium amount is " + this.premium);
   }
 }

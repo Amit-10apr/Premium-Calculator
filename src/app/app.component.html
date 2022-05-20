@@ -17,11 +17,15 @@
                       </div>
                       <div class="form-group">
                           <label>Date of Birth</label>
-                          <input type="text" bsDatepicker class="form-control" formControlName="dob" onkeydown="event.preventDefault()" >
+                          <input type="text" bsDatepicker class="form-control" formControlName="dob" onkeydown="event.preventDefault()">
                           <span class="text-danger"
                               *ngIf="(premiumCalForm.controls['dob'].touched || submitted) && premiumCalForm.controls['dob'].errors?.['required']">
                               DOB is required
                           </span>
+                      </div>
+                      <div class="form-group">
+                        <label>Age</label>
+                        <input type ="number" class="form-control" [value]="age == 0 ? '' : age" onkeydown="event.preventDefault()"/>
                       </div>
                       <div class="form-group">
                           <label>Occupation</label>
